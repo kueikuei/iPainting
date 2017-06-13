@@ -1,40 +1,93 @@
+
 var style = 'free';
-var color = 'black'
-var size = 6;
-var cap = 'round';
 var x = 0;
 var y = 0;
 var ox = 0;
 var oy = 0;
 var flag = false;
 
+//抓取畫布
 var canvasSrc = document.getElementById('draw');
 canvasSrc.width = document.body.clientWidth;
 canvasSrc.height = document.body.clientHeight;
 var contextSrc = canvasSrc.getContext('2d');
 
-var container = canvasSrc.parentNode;
+var container = canvasSrc.parentNode;//抓其父親節點
 
+//製造臨時畫布<canvas id="temp"></canvas>
 canvasTemp = document.createElement('canvas');
 canvasTemp.id = 'temp';
+//畫布寬高定成使用者裝置的
 canvasTemp.width = canvasSrc.width;
 canvasTemp.height = canvasSrc.height;
+//在div下再加一個<canvas>
 container.appendChild(canvasTemp);
+//canvasTemp= document.getElementById('temp');
 var contextTemp = canvasTemp.getContext('2d');
 
-function changeStyle(s)
-{
-	style = s;
+//---------------筆刷樣式---------------
+function changeType(){
+	if (document.getElementById('butt').checked)
+	{
+		contextTemp.lineCap = 'butt';
+	}
+	else if(document.getElementById('round').checked)
+	{
+		contextTemp.lineCap = 'round';
+	}
+	else 
+	{
+		contextTemp.lineCap = 'square';
+	}
 }
 
-function changeSize(s)
-{
-	size = s;
+//---------------筆刷大小---------------
+function changeSize(){
+	if (document.getElementById('Fivepx').checked)
+	{
+		contextTemp.lineWidth = 5;
+	}
+	else if(document.getElementById('Tenpx').checked)
+	{
+		contextTemp.lineWidth =10;
+	}
+	else 
+	{
+		contextTemp.lineWidth = 15;
+	}
 }
 
-function changeCap(s)
+//---------------顏色---------------
+function changeColor(){
+	if (document.getElementById('red').checked)
+	{
+		contextTemp.strokeStyle = 'red';
+	}
+	else if(document.getElementById('green').checked)
+	{
+		contextTemp.strokeStyle = 'green';
+	}
+	else 
+	{
+		contextTemp.strokeStyle = 'blue';
+	}
+}
+
+//---------------幾何圖形---------------
+function changeStyle()
 {
-	cap = s;
+	if (document.getElementById('line').checked)
+	{
+		style = 'line';
+	}
+	else if(document.getElementById('rect').checked)
+	{
+		style = 'rect';
+	}
+	else
+	{
+		style = 'free';
+	}
 }
 
 function draw()
@@ -43,21 +96,25 @@ function draw()
 	contextTemp.clearRect(0, 0, canvasTemp.width, canvasTemp.height);
 }
 
+//觸發事件touchstart、touchmove、touchend
 canvasTemp.addEventListener('touchstart', function(e){
-	e.preventDefault();
+	e.preventDefault();//原始觸發事件關閉
+	changeType();
+	changeSize();
+	changeColor();
+	changeStyle();
 	flag = true;
 	ox = e.touches[0].pageX;
 	oy = e.touches[0].pageY;
 }, false);
 
 canvasTemp.addEventListener('touchmove', function(e){
-	contextTemp.strokeStyle = color;
-	contextTemp.lineWidth = size;
-	contextTemp.lineCap = cap;
+	//contextTemp.lineWidth = 10;
+	//contextTemp.lineCap = 'square';
 
 	if (style == 'line')
 	{
-		if (!flag)
+		if (!flag)//預防沒有touchstart的發生便開始touchmove
 		{
 			return;
 		}
@@ -112,15 +169,17 @@ canvasTemp.addEventListener('touchend', function(e){
 	}
 }, false);
 
+//轉向事件觸發
 window.addEventListener('orientationchange', function(){
 	if (confirm('是否確定清除全畫面？'))
 	{
-		contextSrc = canvasSrc.getContext('2d');
-		contextSrc.clearRect(0,0, canvasSrc.width, canvasSrc.height);
+	
+		contextSrc = canvasSrc.getContext('2d');//重新啟動使其能在旋轉螢幕後能可繪圖
+		contextSrc.clearRect(0,0,canvasTemp.width, canvasTemp.height);
 	}
 }, true);
 
-function save()
-{
-	Canvas2Image.saveAsPNG(canvasSrc);
-}
+//儲存成照片
+document.getElementById('save').addEventListener('touchstart', function(){
+	Canvas2Image.saveAsJPEG(canvasSrc);
+}, true);
