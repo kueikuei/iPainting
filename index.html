@@ -1,12 +1,95 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="user-scalable=no,initial-scale=1" />
 		<title>塗鴉牆程式</title>
+		<link rel="stylesheet" href="./jquery.mobile/jquery.mobile-1.4.0.min.css" />
 		<link rel="stylesheet" href="css/main.css" type="text/css" media="all" />
+		<script src="./jquery.mobile/jquery-2.1.0.min.js"></script>
+		<script src="./jquery.mobile/jquery.mobile-1.4.0.min.js"></script>
 	</head>
 	<body>
-		<canvas id="draw"></canvas>
+		
+		<div data-role="page">
+			<div data-role="header" data-position="fixed">
+				<canvas id="draw"></canvas>
+				<a href="#defaultpanel" data-role="button" data-inline="true" data-icon="gear" data-iconpos="notext">開啟面板</a>
+			</div>
+			
+			<div data-role="panel" data-display="overlay" id="defaultpanel" data-theme="a">
+			
+				<div class="panel-content">
+					<div data-role="collapsible-set">
+					
+						<div data-role="collapsible">
+							<h3>筆刷色彩</h3>
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="color" id="black" value="black" onClick="color='black';" checked>
+								<label for="black">黑</label>
+								<input type="radio" name="color" id="red" value="red" onClick="color='red';">
+								<label for="red" style="color:red">紅</label>
+								<input type="radio" name="color" id="green" value="green" onClick="color='green';">
+								<label for="green" style="color:green">綠</label>
+								<input type="radio" name="color" id="blue" value="blue" onClick="color='blue';">
+								<label for="blue" style="color:blue">藍</label>
+								<input type="radio" name="color" id="purple" value="purple" onClick="color='purple';">
+								<label for="purple" style="color:purple">紫</label>
+								<input type="radio" name="color" id="orange" value="orange" onClick="color='orange';">
+								<label for="orange" style="color:orange">橙</label>
+								<input type="radio" name="color" id="gold" value="gold" onClick="color='gold';">
+								<label for="gold" style="color:gold">金</label>
+								<input type="radio" name="color" id="gray" value="gray" onClick="color='gray';">
+								<label for="gray" style="color:gray">灰</label>
+							</fieldset>
+						</div>
+						<div data-role="collapsible">
+							<h3>筆刷形式</h3>
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="cap" id="round" value="round" onClick="changeCap('round');" checked>
+								<label for="round">圓頭</label>
+								<input type="radio" name="cap" id="butt" value="butt" onClick="changeCap('line');">
+								<label for="butt">平頭</label>
+								<input type="radio" name="cap" id="square" value="square" onClick="changeCap('square');">
+								<label for="square">方頭</label>
+							</fieldset>
+						</div>
+						<div data-role="collapsible">
+							<h3>筆刷大小</h3>
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="size" id="size3" value="size3" onClick="changeSize(3);">
+								<label for="size3">3</label>
+								<input type="radio" name="size" id="size6" value="size6" onClick="changeSize(6);" checked>
+								<label for="size6">6</label>
+								<input type="radio" name="size" id="size9" value="size9" onClick="changeSize(9);">
+								<label for="size9">9</label>
+								<input type="radio" name="size" id="size15" value="size15" onClick="changeSize(15);">
+								<label for="size15">15</label>
+								<input type="radio" name="size" id="size30" value="size30" onClick="changeSize(30);">
+								<label for="size30">30</label>
+							</fieldset>
+						</div>
+						<div data-role="collapsible">
+							<h3>幾何圖形</h3>
+							<fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
+								<input type="radio" name="style" id="free" value="free" onClick="changeStyle('free');" checked>
+								<label for="free">線條</label>
+								<input type="radio" name="style" id="line" value="line" onClick="changeStyle('line');">
+								<label for="line">線段</label>
+								<input type="radio" name="style" id="rect" value="rect" onClick="changeStyle('rect');">
+								<label for="rect">矩形</label>
+							</fieldset>
+						</div>
+					</div>
+					
+					<a href="#" data-role="button" data-theme="c" data-icon="camera" data-inline="true" onClick="save();">儲存</a>
+					<a href="#" data-rel="close" data-role="button" data-theme="c" data-icon="delete" data-inline="true">關閉</a>
+				</div>
+			</div>
+		</div> 
+		
+		<script type="text/javascript" src="js/canvas2image.js"></script>
+		<script type="text/javascript" src="js/base64.js"></script>
 		<script type="text/javascript" src="js/draw.js"></script>
 	</body>
 </html>
